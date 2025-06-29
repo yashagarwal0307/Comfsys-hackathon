@@ -1,0 +1,30 @@
+import os
+import shutil
+
+def flatten_dataset(root_dir):
+    for identity_folder in os.listdir(root_dir):
+        identity_path = os.path.join(root_dir, identity_folder)
+        if not os.path.isdir(identity_path):
+            continue
+
+        for subdir, _, files in os.walk(identity_path):
+            for file in files:
+                if file.lower().endswith(('.jpg', '.png')):
+                    src = os.path.join(subdir, file)
+                    dst = os.path.join(identity_path, file)
+                    if src != dst:
+                        shutil.move(src, dst)
+
+        # Remove now-empty subdirectories
+        for root, dirs, _ in os.walk(identity_path):
+            for d in dirs:
+                try:
+                    os.rmdir(os.path.join(root, d))
+                except OSError:
+                    pass
+
+    print("Dataset flattening complete.")
+
+# Example usage
+flatten_dataset("D:/ML Projects/Comsys/Task_B/train")
+flatten_dataset("D:/ML Projects/Comsys/Task_B/val")
