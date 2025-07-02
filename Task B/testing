@@ -1,0 +1,44 @@
+import os
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.metrics import accuracy_score
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+
+IMG_SIZE = (160, 160)
+VAL_PATH = "Task_B/val"
+
+# === Load embedding model ===
+model = load_model("face_embedding_model.h5", compile=False)
+
+# === Extract embeddings ===
+def extract_embeddings(folder_path):
+    embeddings = []
+    labels = []
+    for person in os.listdir(folder_path):
+        person_folder = os.path.join(folder_path, person)
+        for fname in os.listdir(person_folder):
+            img_path = os.path.join(person_folder, fname)
+            img = image.load_img(img_path, target_size=IMG_SIZE)
+            img = image.img_to_array(img) / 255.0
+            emb = model.predict(np.expand_dims(img, axis=0), verbose=0)[0]
+            embeddings.append(emb)
+            labels.append(person)
+    return np.array(embeddings), np.array(labels)
+
+# === Verification by Nearest Neighbor ===
+def compute_verification_accuracy(embeddings, labels):
+    predictions = []
+    for i, emb in enumerate(embeddings):
+        others = np.delete(embeddings, i, axis=0)
+        other_labels = np.delete(labels, i, axis=0)
+        sims = cosine_similarity([emb], others)[0]
+        pred = other_labels[np.argmax(sims)]
+        predictions.append(pred)
+    acc = accuracy_score(labels, predictions)
+    return acc
+
+# === Run Evaluation ===
+embeddings, labels = extract_embeddings(VAL_PATH)
+acc = compute_verification_accuracy(embeddings, labels)
+print(f"Verification Accuracy: {acc * 100:.2f}%")
