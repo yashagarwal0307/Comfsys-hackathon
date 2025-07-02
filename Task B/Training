@@ -1,0 +1,87 @@
+import os
+import random
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras import layers, Model, optimizers
+from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.utils import Sequence
+
+# === CONFIG ===
+IMG_SIZE = (160, 160)
+EMBED_DIM = 128
+BATCH_SIZE = 32
+EPOCHS = 10
+TRAIN_PATH = "Task_B/train"
+
+# === Triplet Generator ===
+class TripletGenerator(Sequence):
+    def __init__(self, dataset_path, batch_size=BATCH_SIZE):
+        self.dataset_path = dataset_path
+        self.batch_size = batch_size
+        self.people = os.listdir(dataset_path)
+        self.image_map = {p: os.listdir(os.path.join(dataset_path, p)) for p in self.people}
+
+    def __len__(self):
+        return 1000  # arbitrary
+
+    def __getitem__(self, idx):
+        anchors, positives, negatives = [], [], []
+        for _ in range(self.batch_size):
+            person = random.choice(self.people)
+            positive_imgs = random.sample(self.image_map[person], 2)
+            neg_person = random.choice([p for p in self.people if p != person])
+            neg_img = random.choice(self.image_map[neg_person])
+
+            anc = self._load_img(os.path.join(self.dataset_path, person, positive_imgs[0]))
+            pos = self._load_img(os.path.join(self.dataset_path, person, positive_imgs[1]))
+            neg = self._load_img(os.path.join(self.dataset_path, neg_person, neg_img))
+
+            anchors.append(anc)
+            positives.append(pos)
+            negatives.append(neg)
+
+        return [np.array(anchors), np.array(positives), np.array(negatives)], np.zeros((self.batch_size, 1))
+
+    def _load_img(self, path):
+        img = image.load_img(path, target_size=IMG_SIZE)
+        return image.img_to_array(img) / 255.0
+
+# === Triplet Loss ===
+def triplet_loss(_, y_pred, alpha=0.2):
+    total_leng = y_pred.shape[-1]
+    anchor, positive, negative = tf.split(y_pred, num_or_size_splits=3, axis=1)
+    pos_dist = tf.reduce_sum(tf.square(anchor - positive), axis=-1)
+    neg_dist = tf.reduce_sum(tf.square(anchor - negative), axis=-1)
+    basic_loss = pos_dist - neg_dist + alpha
+    return tf.reduce_mean(tf.maximum(basic_loss, 0.0))
+
+# === Embedding Model ===
+def create_embedding_model():
+    base = MobileNetV2(input_shape=IMG_SIZE + (3,), include_top=False, pooling='avg')
+    x = layers.Dense(EMBED_DIM)(base.output)
+    return Model(inputs=base.input, outputs=x)
+
+# === Siamese Network ===
+def build_siamese(embedding_model):
+    input_a = layers.Input(shape=IMG_SIZE + (3,))
+    input_p = layers.Input(shape=IMG_SIZE + (3,))
+    input_n = layers.Input(shape=IMG_SIZE + (3,))
+
+    emb_a = embedding_model(input_a)
+    emb_p = embedding_model(input_p)
+    emb_n = embedding_model(input_n)
+
+    merged = layers.Concatenate(axis=1)([emb_a, emb_p, emb_n])
+    return Model(inputs=[input_a, input_p, input_n], outputs=merged)
+
+# === MAIN ===
+if __name__ == "__main__":
+    generator = TripletGenerator(TRAIN_PATH)
+    embedding_model = create_embedding_model()
+    siamese_model = build_siamese(embedding_model)
+
+    siamese_model.compile(loss=triplet_loss, optimizer=optimizers.Adam(0.0001))
+    siamese_model.fit(generator, epochs=EPOCHS)
+
+    embedding_model.save("face_embedding_model.h5")
