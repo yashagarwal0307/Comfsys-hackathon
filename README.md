@@ -30,7 +30,3 @@ This task involved classifying gender based on a provided dataset. The dataset w
 ## Results
 
 * **Best validation accuracy:** **93.8%**
-
----
-
-Let me know if you want this expanded with setup instructions, code usage, or visualizations.
