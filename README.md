@@ -30,8 +30,8 @@ This task involved classifying gender based on a provided dataset. The dataset w
 ## Results
 
 * **Best validation accuracy:** **93.8%**
-* Results are replicable
 
+** Just run the jpynb file with the correct paths
 
 ---
 
@@ -77,5 +77,6 @@ Evaluated on the validation set using cosine similarity between embeddings.
 
 * Saved the trained embedding model (`face_embedding_model.h5`) for use in inference and verification tasks.
 
-
+** First run the preprocessing code.
+** Then take the preprocessed folders and run the training and testing codes.
 
