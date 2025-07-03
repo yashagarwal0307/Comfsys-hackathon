@@ -11,7 +11,7 @@ This task involved classifying gender based on a provided dataset. The dataset w
 * **Data Handling:**
 
   * Detected class imbalance in the training data.
-  * Applied upsampling to the minority class to balance the distribution.
+  * Applied upsampling to the minority class after feature extraction to balance the distribution.
 
 * **Feature Extraction:**
 
