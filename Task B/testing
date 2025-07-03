@@ -36,9 +36,10 @@ def compute_verification_accuracy(embeddings, labels):
         pred = other_labels[np.argmax(sims)]
         predictions.append(pred)
     acc = accuracy_score(labels, predictions)
-    return acc
+    return acc,labels,predictions
 
 # === Run Evaluation ===
 embeddings, labels = extract_embeddings(VAL_PATH)
-acc = compute_verification_accuracy(embeddings, labels)
-print(f"Verification Accuracy: {acc * 100:.2f}%")
+acc, y_true, y_pred = compute_verification_accuracy(embeddings, labels)
+print(f"Top1 Accuracy: {acc * 100:.2f}%")
+print("F1 Score:", f1_score(y_true, y_pred, average='macro'))
