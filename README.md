@@ -35,7 +35,7 @@ This task involved classifying gender based on a provided dataset. The dataset w
 
 ---
 
-# Task B - Face Recognition (ComfSys Hackathon)
+# Task B - Face Recognition 
 
 ## 📌 Objective
 
