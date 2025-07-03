@@ -1,3 +1,8 @@
+Training accurcay-1.0
+Training precision-1.0
+training recall -1.0
+training f1-score-1.0
+
 === Threshold: 0.5 ===
               precision    recall  f1-score   support
 
@@ -8,8 +13,5 @@
    macro avg      0.921     0.870     0.892       422
 weighted avg      0.937     0.938     0.936       422
 
-Confusion Matrix:
-                       Predicted 0  Predicted 1
-Actual 0 (No Disease)           60           19
-Actual 1 (Disease)               7          336
-Accuracy: 0.938
+
+validation Accuracy: 0.938
