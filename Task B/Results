@@ -1,2 +1,9 @@
+Training Top1 Accuracy: 97.14%
+Training F1 Score: 98.26247099580975
+Training Precision: 97%
+Training recall: 97%
+
 Validation Top1 Accuracy: 98.25%
 Validation F1 Score: 0.9826247099580975
+Validation Precision: 98
+Validation recall: 98
