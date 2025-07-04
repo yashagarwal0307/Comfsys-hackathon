@@ -4,7 +4,7 @@
 
 ## Overview
 
-This task involved classifying gender based on a provided dataset. The dataset was split into training and validation sets, with a notable class imbalance.
+This task involved classifying whether a person is male/female  based on a provided image  dataset. The dataset was split into training and validation sets, with a notable class imbalance.
 
 ## Approach
 
