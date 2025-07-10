@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 
-def flatten_dataset(read_only_dir, output_dir): # use this if using kaggle/ collab or if you are saving the file after flattening in some other file otherwise use the code in preprocessing
+def flatten_dataset(read_only_dir, output_dir): # use this code  if using kaggle/ collab or if you are saving the file after flattening in some other file otherwise use the code in preprocessing
     os.makedirs(output_dir, exist_ok=True)
 
     for identity_folder in os.listdir(read_only_dir):
