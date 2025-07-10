@@ -1,14 +1,9 @@
 import numpy as np
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
-from xgboost import XGBClassifier
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.applications import EfficientNetB3
 from tensorflow.keras.applications.efficientnet import preprocess_input
-from tensorflow.keras.models import Model
-from tensorflow.keras.layers import GlobalAveragePooling2D
-from sklearn.utils import resample
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from tensorflow.keras.models import load_model
 import joblib
 
