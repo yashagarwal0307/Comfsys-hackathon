@@ -29,9 +29,9 @@ This task involved classifying whether a person is male/female  based on a provi
 
 ## Results
 
-* **Best validation accuracy:** **93.8%**
+* **Best validation accuracy:** **94.1**
 
-** Just run the jpynb file with the correct paths
+** download the models and then change the paths accordingly for the test script
 
 ---
 
