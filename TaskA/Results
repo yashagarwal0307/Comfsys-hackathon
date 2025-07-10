@@ -3,15 +3,17 @@ Training precision-1.0
 training recall -1.0
 training f1-score-1.0
 
-=== Threshold: 0.5 ===
+Threshold: 0.5
               precision    recall  f1-score   support
 
-           0      0.896     0.759     0.822        79
-           1      0.946     0.980     0.963       343
+           0      0.909     0.759     0.828        79
+           1      0.947     0.983     0.964       343
 
-    accuracy                          0.938       422
-   macro avg      0.921     0.870     0.892       422
-weighted avg      0.937     0.938     0.936       422
+    accuracy                          0.941       422
+   macro avg      0.928     0.871     0.896       422
+weighted avg      0.940     0.941     0.939       422
 
-
-validation Accuracy: 0.938
+Confusion Matrix:
+ [[ 60  19]
+ [  6 337]]
+Accuracy: 0.9407582938388626
