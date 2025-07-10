@@ -1,0 +1,38 @@
+import numpy as np
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+from xgboost import XGBClassifier
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.applications import EfficientNetB3
+from tensorflow.keras.applications.efficientnet import preprocess_input
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import GlobalAveragePooling2D
+from sklearn.utils import resample
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+from tensorflow.keras.models import load_model
+import joblib
+
+val_dir = '/kaggle/input/comfsys-challenge/Comys_Hackathon5/Task_A/val' # change the path name if needed for testing
+datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
+val_gen = datagen.flow_from_directory(val_dir, target_size=(224, 224), batch_size=1, class_mode='binary', shuffle=False)
+
+# Load the feature extraction model
+model = load_model('efficientnet_feature_extractor.h5') # change path name if needed when using the model
+
+val_features = model.predict(val_gen, steps=len(val_gen), verbose=1)
+val_labels = val_gen.classes
+scaler = StandardScaler()
+X_val_scaled = scaler.transform(val_features)
+
+# Load saved objects
+loaded_model = joblib.load('/kaggle/working/voting_clf.pkl') # change path name if needed when using the model
+
+# Predict
+y_probs = loaded_model.predict_proba(X_val_scaled)[:, 1]
+
+for thresh in [0.5, 0.45, 0.4, 0.35]:
+    y_pred = (y_probs >= thresh).astype(int)
+    print(f"\nThreshold: {thresh}")
+    print(classification_report(val_labels, y_pred, digits=3))
+    print("Confusion Matrix:\n", confusion_matrix(val_labels, y_pred))
+    print("Accuracy:", accuracy_score(val_labels, y_pred))
