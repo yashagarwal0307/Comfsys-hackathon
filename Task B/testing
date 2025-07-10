@@ -1,9 +1,38 @@
 import os
+import shutil
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import accuracy_score
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
+
+def flatten_dataset(read_only_dir, output_dir): # use this if using kaggle/ collab or if you are saving the file after flattening in some other file otherwise use the code in preprocessing
+    os.makedirs(output_dir, exist_ok=True)
+
+    for identity_folder in os.listdir(read_only_dir):
+        identity_path = os.path.join(read_only_dir, identity_folder)
+        if not os.path.isdir(identity_path):
+            continue
+
+        for subdir, _, files in os.walk(identity_path):
+            for file in files:
+                if file.lower().endswith(('.jpg', '.png')):
+                    src = os.path.join(subdir, file)
+                    # Flatten: put all images in one output folder per identity
+                    dst_identity_dir = os.path.join(output_dir, identity_folder)
+                    os.makedirs(dst_identity_dir, exist_ok=True)
+                    dst = os.path.join(dst_identity_dir, file)
+                    
+                    if not os.path.exists(dst):
+                        shutil.copy2(src, dst)
+
+    print("Dataset flattening complete.")
+
+
+flatten_dataset(
+    "/kaggle/input/comfsys-challenge/Comys_Hackathon5/Task_B/train",
+    "/kaggle/working/flat_train"
+)
 
 IMG_SIZE = (160, 160)
 VAL_PATH = "Task_B/val" # do use the flattened dataset here
