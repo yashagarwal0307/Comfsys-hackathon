@@ -6,7 +6,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 
 IMG_SIZE = (160, 160)
-VAL_PATH = "Task_B/val"
+VAL_PATH = "Task_B/val" # do use the flattened dataset here
 
 # === Load embedding model ===
 model = load_model("face_embedding_model.h5", compile=False)
