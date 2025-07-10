@@ -79,4 +79,3 @@ Evaluated on the validation set using cosine similarity between embeddings.
 
 ** First run the preprocessing code.
 ** Then take the preprocessed folders and run the training and testing codes.
-
