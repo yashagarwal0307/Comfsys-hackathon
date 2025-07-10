@@ -8,6 +8,12 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.layers import GlobalAveragePooling2D
 from sklearn.utils import resample
 from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier
+from xgboost import XGBClassifier
+from catboost import CatBoostClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, roc_auc_score, roc_curve, precision_recall_curve, auc
+import matplotlib.pyplot as plt
 
 # 2. Paths
 train_dir = '/kaggle/input/comfsys-challenge/Comys_Hackathon5/Task_A/train'
@@ -67,17 +73,8 @@ for thresh in [0.5, 0.45, 0.4, 0.35]:
     print("Confusion Matrix:\n", confusion_matrix(val_labels, y_pred))
     print("Accuracy:", accuracy_score(val_labels, y_pred))
 
-import numpy as np
-from sklearn.ensemble import RandomForestClassifier, VotingClassifier
-from xgboost import XGBClassifier
-from catboost import CatBoostClassifier
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, roc_auc_score, roc_curve, precision_recall_curve, auc
-import matplotlib.pyplot as plt
 
-# Data loading steps assumed to be completed already
-# Assume:
-# X_train_scaled, y_train, X_val_scaled, val_labels, y_probs (if not using VotingClassifier yet)
+
 
 # Models
 rf = RandomForestClassifier(n_estimators=100, max_depth=6, random_state=42)
