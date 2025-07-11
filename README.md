@@ -31,6 +31,8 @@ This task involved classifying whether a person is male/female  based on a provi
 
 * **Best validation accuracy:** **94.1**
 
+* [task A weights](https://drive.google.com/drive/folders/1BqHdcmQuXPkYQ4sPYP1xz6NxIpnvlLC5?usp=sharing)
+
 ** download the models and then change the paths accordingly for the test script
 
 ---
