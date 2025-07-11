@@ -77,8 +77,6 @@ Evaluated on the validation set using cosine similarity between embeddings.
 
 * Saved the trained embedding model (`face_embedding_model.h5`) for use in inference and verification tasks.
 
-** First run the preprocessing code.(optional)
+** run the test code with the flattening code if using kaggle/collab or if you are saving the directory in a different file and not changing the original file.
 
-** Run the testing  code with the path but do plz check the comment before the preprocessing code in test script.
-
-** otherwise first do preprocessing and then just run the test script without the flattening code.
+** otherwise first run the preprocessing code  and then just run the test script without the flattening code.
